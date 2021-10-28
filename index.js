@@ -11,6 +11,7 @@ const articleRouter = require("./routes/article");
 const app = express();
 const PORT = config.get("PORT") || 5000;
 
+app.use("/uploads", express.static("uploads"));
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

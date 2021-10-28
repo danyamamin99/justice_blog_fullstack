@@ -25,9 +25,7 @@ module.exports.getById = async (req, res) => {
 
 module.exports.getAllByUserId = async (req, res) => {
   try {
-    const articles = await Article.find({ user: req.user.userId }).sort({
-      date: -1,
-    });
+    const articles = await User.findById(req.user.userId);
 
     res.status(200).json(articles);
   } catch (e) {
@@ -37,16 +35,20 @@ module.exports.getAllByUserId = async (req, res) => {
 
 module.exports.create = async (req, res) => {
   try {
+    const user = await User.findById(req.user.userId);
     const article = new Article({
       title: req.body.title,
       category: req.body.category,
       tag: `#${req.body.category}`,
       description: req.body.description,
       image: req.file.path,
-      user: req.user.userId,
+      user: {...user}
     });
 
+    user.articles.push(article);
+
     await article.save();
+    await user.save();
 
     res.status(201).json(article);
   } catch (e) {

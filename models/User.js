@@ -26,7 +26,36 @@ const schemaUser = new Schema({
     type: String,
     default: "",
   },
-  articles: [{ type: Schema.Types.ObjectId, ref: "article" }],
+  articles: [
+    {
+      title: {
+        type: String,
+      },
+      category: {
+        type: String,
+      },
+      description: {
+        type: String,
+        required: true,
+      },
+      tag: {
+        type: String,
+        required: true,
+      },
+      image: {
+        type: String,
+        required: true,
+      },
+      count: {
+        type: Number,
+        default: 0,
+      },
+      date: {
+        type: Date,
+        default: Date.now,
+      },
+    }
+  ],
 });
 
 module.exports = model("user", schemaUser);

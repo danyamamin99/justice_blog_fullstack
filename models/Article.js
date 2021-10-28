@@ -30,8 +30,18 @@ const schemaArticle = new Schema({
     default: Date.now,
   },
   user: {
-    type: Schema.Types.ObjectId,
-    ref: "user",
+    f_name: {
+      type: String,
+    },
+    l_name: {
+      type: String,
+    },
+    description: {
+      type: String,
+    },
+    avatar: {
+      type: String,
+    },
   },
 });
 
