@@ -1,4 +1,5 @@
 const Article = require("../models/Article");
+const User = require("../models/User");
 const errorHandler = require("../utils/errorHandler");
 
 module.exports.getAll = async (req, res) => {

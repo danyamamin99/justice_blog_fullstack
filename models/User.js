@@ -26,6 +26,7 @@ const schemaUser = new Schema({
     type: String,
     default: "",
   },
+  articles: [{ type: Schema.Types.ObjectId, ref: "article" }],
 });
 
 module.exports = model("user", schemaUser);
