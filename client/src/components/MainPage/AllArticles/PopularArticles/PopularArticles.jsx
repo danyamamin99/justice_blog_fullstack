@@ -5,10 +5,8 @@ import moment from "moment";
 import views from "../../../../assets/img/views.svg";
 import noPhoto from "../../../../assets/img/noPhoto.png";
 
-const PopularArticles = ({ articles }) => {
-  const { date, tag, title, description, count, image, _id, user } =
-    articles[0];
-
+const PopularArticles = (props) => {
+  const { date, tag, title, description, count, image, _id, user } = props.article;
   return (
     <Link to={`/article/${_id}`}>
       <div className="main__views">
@@ -22,12 +20,12 @@ const PopularArticles = ({ articles }) => {
           <h2>{title}</h2>
           <p
             dangerouslySetInnerHTML={{
-              __html: description.substr(0, 300) + "...",
+              __html: description?.substr(0, 300) + "...",
             }}
           />
           <div className="main__views__user-content">
-            <img className="user-avatar" src={!!user.avatar ? user.avatar : noPhoto} alt="user-avatar" />
-            <span className="user-name">{`${user.f_name} ${user.l_name}`}</span>
+            <img className="user-avatar" src={!!user?.avatar ? user?.avatar : noPhoto} alt="user-avatar" />
+            <span className="user-name">{`${user?.f_name} ${user?.l_name}`}</span>
             <div className="user-info">
               <span>{moment(date).format("MMM DD")} · 5 min read</span>
             </div>

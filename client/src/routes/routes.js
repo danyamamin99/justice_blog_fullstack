@@ -40,18 +40,18 @@ const routes = [
     exact: true,
     withAuth: false,
   },
-  // {
-  //   path: "/profile/:id",
-  //   component: Profile,
-  //   exact: true,
-  //   withAuth: true,
-  // },
-  // {
-  //   path: "/addArticle",
-  //   component: AddArticle,
-  //   exact: true,
-  //   withAuth: true,
-  // },
+  {
+    path: "/profile/:id",
+    component: Profile,
+    exact: true,
+    withAuth: true,
+  },
+  {
+    path: "/addArticle",
+    component: AddArticle,
+    exact: true,
+    withAuth: true,
+  },
   {
     path: "/*",
     component: NoMatch,

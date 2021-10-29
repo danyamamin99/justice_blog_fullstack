@@ -108,7 +108,8 @@
 }
 
 .not_visible {
-    visibility: hidden;
+    display: none;
+    //visibility: hidden;
 }
 
 .error {

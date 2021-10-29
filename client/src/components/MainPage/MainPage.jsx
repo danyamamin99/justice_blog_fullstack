@@ -10,25 +10,28 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "./MainPage.scss";
 
 const MainPage = () => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [articles, setArticles] = useState([]);
+  const [popularArticle, setPopularArticle] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const articlesPerPage = 6;
 
   const fetchArticles = useCallback(async () => {
     try {
-      setLoading(true);
-      const response = await axios.get("/api/article/");
-      setArticles(response.data);
-      setTimeout(() => setLoading(false), 1000)
+      return await axios.get("/api/article/");
     } catch (error) {
+      console.log(error);
       setLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    fetchArticles();
-  }, [fetchArticles]);
+    fetchArticles().then(res => {
+      setPopularArticle(res.data.popularArticle);
+      setArticles(res.data.articles);
+      setTimeout(() => setLoading(false), 1000)
+    });
+  }, []);
 
   const lastArticleIndex = currentPage * articlesPerPage;
   const firstArticleIndex = lastArticleIndex - articlesPerPage;
@@ -56,7 +59,7 @@ const MainPage = () => {
               <main className="main">
                 <div className="container">
                   <div className="main__wrapper">
-                    <PopularArticles articles={articles} />
+                    <PopularArticles article={popularArticle} />
                     <div className="main__popular">
                       <h1 className="main__popular-title">Popular articles</h1>
                       <div className="main__popular-content">

@@ -5,7 +5,6 @@ import axios from "axios";
 import { Formik } from "formik";
 
 import AuthContext from "../../context/AuthContext";
-import NoPhoto from "../../assets/img/noPhoto.png";
 import "./SingIn.scss";
 
 const SingIn = () => {

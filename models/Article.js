@@ -30,6 +30,10 @@ const schemaArticle = new Schema({
     default: Date.now,
   },
   user: {
+    _id: {
+      type: Schema.Types.ObjectId,
+      ref: "user",
+    },
     f_name: {
       type: String,
     },

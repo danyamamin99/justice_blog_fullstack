@@ -1,5 +1,5 @@
-import React, {useState, useCallback, useContext, useEffect} from "react";
-import { Link, useParams } from "react-router-dom";
+import React, {useCallback, useContext, useEffect, useState} from "react";
+import {Link, useParams} from "react-router-dom";
 import Loader from "react-loader-spinner";
 import axios from "axios";
 import moment from "moment"
@@ -14,30 +14,39 @@ import AuthContext from "../../context/AuthContext";
 const Article = () => {
   const {token} = useContext(AuthContext);
   const { id } = useParams();
-  const [loading, setLoading] = useState(false);
-  const [article, setArticle] = useState({});
-  const [user, setUser] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [article, setArticle] = useState(null);
+  const [user, setUser] = useState(null);
 
   const fetchArticle = useCallback(async () => {
     try {
-      setLoading(true);
-      const response = await axios.get(`/api/article/${id}`, {
+      return await axios.get(`/api/article/${id}`, {
         headers: {
           "Authorization": `${token}`
         }
-      });
-      setArticle(response.data);
-      setUser(response.data.user);
-      setTimeout(() => setLoading(false), 1000);
+      })
     } catch (error) {
       setLoading(false);
     }
   },[]);
 
   useEffect(() => {
-    fetchArticle();
-  }, [fetchArticle]);
-
+    fetchArticle()
+      .then((res) => {
+        setArticle(res.data.article);
+        setUser(res.data.user);
+        setTimeout(() => setLoading(false), 1000);
+      })
+      .catch(error => {
+        if (error.response) {
+          console.log(error.response.data.message);
+        } else if (error.request) {
+          console.log("Request", error.request);
+        } else {
+          console.log("Error", error.message);
+        }
+      });
+  }, []);
   return (
     <article className="article">
       {
@@ -66,15 +75,15 @@ const Article = () => {
                     <h1>{article.title}</h1>
                   </div>
                   <div className="article-content__img">
-                    <img src={`../${article.image}`} alt="Image" />
+                    <img src={`../${article.image}`} alt="ImagePhoto" />
                   </div>
                   <div className="article-content__description">
                     <p dangerouslySetInnerHTML={{ __html: article.description }} />
                   </div>
                   <div className="article-content__info">
                     <div className="article-content__info-user">
-                      <img className="user-avatar" src={!!user.avatar ? user.avatar : noPhoto} alt="user-avatar" />
-                      <span className="user-name">{`${user.f_name} ${user.l_name}`}</span>
+                      <img className="user-avatar" src={!!user?.avatar ? `../${user?.avatar}` : noPhoto} alt="user-avatar" />
+                      <span className="user-name">{`${user?.f_name} ${user?.l_name}`}</span>
                       <div className="user-info">
                         <span>{moment(article.date).format("MMM DD")} · 5 min read</span>
                       </div>

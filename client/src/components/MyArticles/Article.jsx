@@ -9,7 +9,7 @@ const Article = ({image, tag, title, description, date, count, avatar, l_name, f
   return (
     <li className="my-articles__item">
       <div className="my-articles__item-img">
-        <img src={`../${image}`} alt="Image" />
+        <img src={`../${image}`} alt="ImagePhoto" />
       </div>
       <div className="my-articles__item-tag">
         <span className="tag">{tag}</span>
@@ -20,7 +20,7 @@ const Article = ({image, tag, title, description, date, count, avatar, l_name, f
         dangerouslySetInnerHTML={{ __html: description }}
       />
       <div className="main__popular-list__item-user">
-        <img className="user-avatar" src={!!avatar ? avatar : noPhoto} alt="user-avatar" />
+        <img className="user-avatar" src={!!avatar ? `../${avatar}` : noPhoto} alt="user-avatar" />
         <span className="user-name">{`${f_name} ${l_name}`}</span>
         <div className="user-info">
           <span>{moment(date).format("MMM DD")} · 5 min read</span>

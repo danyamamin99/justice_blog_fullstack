@@ -1,5 +1,7 @@
 .add-article {
   display: flex;
+  justify-content: center;
+  align-items: center;
   flex: 1;
   padding: 80px 0;
   &__title {
@@ -41,11 +43,15 @@
       top: 170px;
     }
   }
+  &__btns {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
   &__btn {
     padding: 16px 32px;
     background: #242424;
     font-size: 16px;
-    line-height: 16px;
     color: #FFFFFF;
     border: none;
     cursor: pointer;

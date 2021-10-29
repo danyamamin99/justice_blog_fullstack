@@ -5,8 +5,9 @@ const errorHandler = require("../utils/errorHandler");
 module.exports.getAll = async (req, res) => {
   try {
     const articles = await Article.find().sort({ date: -1 });
+    const popularArticle = await Article.find().sort({count: -1});
 
-    res.status(200).json(articles);
+    res.status(200).json({articles, popularArticle: popularArticle[0]});
   } catch (e) {
     errorHandler(res, e);
   }
@@ -16,8 +17,9 @@ module.exports.getById = async (req, res) => {
   try {
     const { id } = req.params;
     const article = await Article.findById(id);
+    const user = await User.findById(req.user.userId);
 
-    res.status(200).json(article);
+    res.status(200).json({article, user});
   } catch (e) {
     errorHandler(res, e);
   }
@@ -25,9 +27,10 @@ module.exports.getById = async (req, res) => {
 
 module.exports.getAllByUserId = async (req, res) => {
   try {
-    const articles = await User.findById(req.user.userId);
+    const user = await User.findById(req.user.userId);
+    user.articles = user.articles.sort((a, b) => a.date < b.date ? 1 : -1)
 
-    res.status(200).json(articles);
+    res.status(200).json(user);
   } catch (e) {
     errorHandler(res, e);
   }
@@ -50,7 +53,7 @@ module.exports.create = async (req, res) => {
     await article.save();
     await user.save();
 
-    res.status(201).json(article);
+    res.status(201).json({ message: "Article created!"});
   } catch (e) {
     errorHandler(res, e);
   }

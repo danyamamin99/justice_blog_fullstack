@@ -7,6 +7,7 @@ const morgan = require("morgan");
 
 const authRouter = require("./routes/auth");
 const articleRouter = require("./routes/article");
+const profileRouter = require("./routes/profile");
 
 const app = express();
 const PORT = config.get("PORT") || 5000;
@@ -19,6 +20,7 @@ app.use(cors());
 
 app.use("/api/auth", authRouter);
 app.use("/api/article", articleRouter);
+app.use("/api/profile", profileRouter);
 
 async function start() {
   try {

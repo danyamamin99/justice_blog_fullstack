@@ -11,27 +11,39 @@ import "./MyArticles.scss";
 
 const MyArticles = () => {
   const {id, token} = useContext(AuthContext);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({});
-  const [articles, setArticles] = useState([])
 
   const fetchArticles = useCallback(async () => {
    try {
-     setLoading(true);
-     const response = await axios.get(`/api/article/user/${id}/articles`, {
+     return await axios.get(`/api/article/user/${id}/articles`, {
        headers: {
          "Authorization": `${token}`
        }
      });
-     setUser(response.data);
-     setArticles(response.data.articles);
-     setTimeout(() => setLoading(false), 1000);
     } catch (error) {
+     console.log(error);
      setLoading(false);
     }
    },[]);
 
- useEffect(() => fetchArticles(), [fetchArticles]);
+ useEffect(() => {
+    fetchArticles()
+      .then(res => {
+        setUser(res.data);
+        setTimeout(() => setLoading(false), 1000);
+      })
+      .catch(error => {
+        if (error.response) {
+          console.log(error.response.data.message);
+        } else if (error.request) {
+          console.log("Request", error.request);
+        } else {
+          console.log("Error", error.message);
+        }
+      });
+   },
+   []);
 
   return (
     <>
@@ -53,22 +65,22 @@ const MyArticles = () => {
               <div className="container">
                 <div
                   className={`my-articles__wrapper${
-                    articles.length === 0 ? " my-articles__wrapper_no" : ""
+                    user.articles?.length === 0 ? " my-articles__wrapper_no" : ""
                   }`}
                 >
                   <div className="my-articles-user">
                     <div className="my-articles-user__info">
                       <div className="my-articles-user__info-wrapper">
-                        <img src={!!user.avatar ? user.avatar : noPhoto} alt="user-avatar" />
+                        <img src={!!user.avatar ? `../${user.avatar}` : noPhoto} alt="user-avatar" />
                         <p>{user.f_name}</p>
                         <p>{user.description}</p>
                       </div>
                     </div>
                   </div>
                   <div className="my-articles-content">
-                    {articles.length !== 0 ? (
+                    {user.articles?.length !== 0 ? (
                       <ul className="my-articles__list">
-                        {user.articles.map((article) => (
+                        {user.articles?.map((article) => (
                           <Article
                             key={article._id}
                             {...article}
